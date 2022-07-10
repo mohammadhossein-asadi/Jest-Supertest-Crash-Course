@@ -23,4 +23,37 @@ describe("Integration tests for the books API", () => {
     );
     expect(statusCode).toBe(200);
   });
+
+  it("POST /api/post - faliure on invalid post body", async () => {
+    const { body, statusCode } = await request(app).post("/api/books").send({
+      name: "",
+      author: "John Travolta",
+    });
+
+    console.log(body);
+
+    expect(statusCode).toBe(400);
+    expect(body).toEqual({
+      errors: [
+        {
+          location: "body",
+          msg: "Book name is required",
+          param: "name",
+          value: "",
+        },
+      ],
+    });
+  });
+
+  it("POST /api/books - success", async () => {
+    const { body, statusCode } = await request(app).post("/api/books").send({
+      name: "Face off",
+      author: "John Travolta",
+    });
+
+    expect(statusCode).toBe(200);
+    expect(body).toEqual({
+      message: "Success",
+    });
+  });
 });

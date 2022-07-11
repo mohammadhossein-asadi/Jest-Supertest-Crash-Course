@@ -47,4 +47,18 @@ router.post(
   }
 );
 
+router.put("/:bookid", (req, res) => {
+  const { bookid } = req.params;
+  const { name, author } = req.body;
+
+  const foundBook = bookData.find((book) => book.id === bookid);
+
+  if (!foundBook) {
+    return res.status(404).send({
+      error: true,
+      message: "Book not found",
+    });
+  }
+});
+
 module.exports = router;

@@ -56,4 +56,20 @@ describe("Integration tests for the books API", () => {
       message: "Success",
     });
   });
+
+  it("PUT /api/books/bookid - faliure when book is not found", async () => {
+    const { body, statusCode } = await request(app)
+      .post("/api/books/5000")
+      .send({
+        name: "Love me like you do",
+        author: "John Travolta",
+      });
+
+    expect(statusCode).toBe(404);
+
+    expect(body).toEqual({
+      error: true,
+      message: "Book not found",
+    });
+  });
 });
